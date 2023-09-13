@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { DateTime } from "luxon";
+import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
+import { getRenderedDates } from "./config";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [date, setDate] = useState(DateTime.now());
 
+  function onChange(
+    value: DateValueType,
+    e?: HTMLInputElement | null | undefined
+  ): void {
+    if (value === null) {
+      return;
+    }
+    const startDate = value.startDate;
+    if (typeof startDate !== "string") {
+      return;
+    }
+
+    setDate(DateTime.fromISO(startDate));
+  }
+
+  const { vacationDaysAccrued, vacationDaysTaken } = getRenderedDates(date);
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold mt-6">As of</h1>
+        <Datepicker
+          placeholder={date.toISODate() || ""}
+          value={{ startDate: date.toISODate(), endDate: null }}
+          onChange={onChange}
+          asSingle={true}
+          primaryColor={"blue"} 
+        />
+        <h2 className="text-4xl font-bold mt-6">Vacation Days Accrued</h2>
+        <p className="text-2xl">{vacationDaysAccrued.toFixed(2)}</p>
+        <h2 className="text-4xl font-bold mt-6">Vacation Days Taken</h2>
+        <p className="text-2xl">{vacationDaysTaken}</p>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
-
-export default App
