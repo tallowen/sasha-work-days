@@ -8,7 +8,6 @@ export default function App() {
 
   function onChange(
     value: DateValueType,
-    e?: HTMLInputElement | null | undefined
   ): void {
     if (value === null) {
       return;
