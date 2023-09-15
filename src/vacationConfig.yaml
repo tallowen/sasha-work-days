@@ -1,6 +1,7 @@
 startDate: "2023-09-05"
 vacationDaysPerYear: 30
 holidays:
+  - "2023-10-09"
   - "2023-11-23"
   - "2023-11-24"
   - "2023-12-25"
